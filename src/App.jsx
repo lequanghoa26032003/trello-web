@@ -1,11 +1,10 @@
-
 import Button from '@mui/material/Button'
 import { pink } from '@mui/material/colors'
 import HomeIcon from '@mui/icons-material/Home'
 function App() {
   return (
     <>
-    <div>hoacon</div>
+      <div>hoacon</div>
       <Button variant="contained">Hello world</Button>
       <HomeIcon />
       <HomeIcon color="primary" />
