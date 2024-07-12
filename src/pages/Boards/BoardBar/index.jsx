@@ -9,16 +9,18 @@ import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import User from '~/assets/hoa.jpg'
+import theme from '~/theme'
+import { Button } from '@mui/material'
 const Icon_Styles={
-  color: 'primary.main',
-  bgcolor: 'white',
+  color: 'white',
+  bgcolor: 'transparent',
   px:'5px',
   border: 'none',
   borderRadius: '4px',
-  '& .MuiSvgIcon-root':{
-    color: 'primary.main'
+  '.MuiSvgIcon-root': {
+    color: 'white'
   },
-  '&:hover': {
+  '.MuiSvgIcon-root:hover': {
     bgcolor: 'primary.50'
   }
 }
@@ -33,47 +35,61 @@ function BoardBar() {
       gap: 2,
       px:2,
       overflow: 'auto',
-      border: '1px solid #16a085'
+
+      bgcolor: (theme) => (theme.palette.mode === 'dark'? '#34495e': '#1976d2' )
     }}>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
         <Chip sx={Icon_Styles}
           icon={< DashboardIcon />}
           label= 'HoaConDev MERN Stack Board'
+          clickable
         >
         </Chip>
         <Chip sx={Icon_Styles}
           icon={< VpnLockIcon />}
           label= 'Public/Private Workspace'
+          clickable
         >
         </Chip>
         <Chip sx={Icon_Styles}
           icon={< AddToDriveIcon />}
           label= 'Add to Google Drive'
+          clickable
         >
         </Chip>
         <Chip sx={Icon_Styles}
           icon={< BoltIcon />}
           label= 'Automation'
+          clickable
         >
         </Chip>
         <Chip sx={Icon_Styles}
           icon={< FilterListIcon />}
           label= 'Filters'
+          clickable
         >
         </Chip>
       </Box>
 
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
-        <Chip sx={Icon_Styles}
-          icon={< PersonAddIcon />}
-          label= 'Invite'
+        <Button
+          startIcon={< PersonAddIcon />}
+          variant="outlined"
+          sx= {{
+            color: 'white',
+            borderColor: 'white',
+            '&:hover': { borderColor: 'white'}
+          }}
         >
-        </Chip>
+          Invite
+        </Button>
         <AvatarGroup sx={{ 
           '& .MuiAvatar-root ':{
             height:'34px',
             width: '34px',
-            fontSize: '16px'
+            fontSize: '16px',
+            border: 'none',
+            color: 'white'
           }
         }} max={4}>
           <Avatar alt="HoaDev" src={User} />
