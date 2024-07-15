@@ -28,14 +28,14 @@ function BoardBar() {
   return (
     <Box sx={{
       width: '100%',
-      height: (theme) => theme.trelloCustom.boarBarHeight,
+      height: (theme) => theme.trelloCustom.boardBarHeight,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 2,
       px:2,
       overflow: 'auto',
-
+      borderBottom: '1px solid #ffff',
       bgcolor: (theme) => (theme.palette.mode === 'dark'? '#34495e': '#1976d2' )
     }}>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
@@ -89,14 +89,18 @@ function BoardBar() {
             width: '34px',
             fontSize: '16px',
             border: 'none',
-            color: 'white'
+            color: 'white',
+            '&:first-of-type': { bgcolor:'#a4b0be' }
           }
-        }} max={4}>
-          <Avatar alt="HoaDev" src={User} />
-          <Avatar alt="Travis Howard" src={User} />
-          <Avatar alt="Cindy Baker" src={User} />
-          <Avatar alt="Agnes Walker" src={User} />
-          <Avatar alt="Trevor Henderson" src={User} />
+        }} max={7}>
+          <Avatar title="HoaconDev" alt="HoaDev" src={User} />
+          <Avatar title="HoaconDev" alt="Travis Howard" src={User} />
+          <Avatar title="HoaconDev" alt="Cindy Baker" src={User} />
+          <Avatar title="HoaconDev" alt="Agnes Walker" src={User} />
+          <Avatar title="HoaconDev" alt="Trevor Henderson" src={User} />
+          <Avatar title="HoaconDev" alt="Cindy Baker" src={User} />
+          <Avatar title="HoaconDev" alt="Agnes Walker" src={User} />
+          <Avatar title="HoaconDev" alt="Trevor Henderson" src={User} />
         </AvatarGroup>
       </Box>
 
