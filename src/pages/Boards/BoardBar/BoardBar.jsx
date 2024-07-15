@@ -9,7 +9,6 @@ import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import User from '~/assets/hoa.jpg'
-import theme from '~/theme'
 import { Button } from '@mui/material'
 const Icon_Styles={
   color: 'white',
@@ -35,7 +34,6 @@ function BoardBar() {
       gap: 2,
       px:2,
       overflow: 'auto',
-      borderBottom: '1px solid #ffff',
       bgcolor: (theme) => (theme.palette.mode === 'dark'? '#34495e': '#1976d2' )
     }}>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
@@ -78,12 +76,12 @@ function BoardBar() {
           sx= {{
             color: 'white',
             borderColor: 'white',
-            '&:hover': { borderColor: 'white'}
+            '&:hover': { borderColor: 'white' }
           }}
         >
           Invite
         </Button>
-        <AvatarGroup sx={{ 
+        <AvatarGroup sx={{
           '& .MuiAvatar-root ':{
             height:'34px',
             width: '34px',
