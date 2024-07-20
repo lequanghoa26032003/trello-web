@@ -17,8 +17,11 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
+import { mapOrder } from '~/ultis/sorts'
 
-function Column() {
+function Column( props ) {
+  const { column } = props
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -51,7 +54,7 @@ function Column() {
           cursor: 'pointer',
           fontSize: '1rem'
         }} >
-          Column title
+          {column?.title}
         </Typography>
         <Box>
           <Tooltip title="More options" >
@@ -100,7 +103,7 @@ function Column() {
           </Menu>
         </Box>
       </Box>
-      <ListCards/>
+      <ListCards cards = {orderedCards} />
       <Box sx= {{
         height: (theme) => theme.trelloCustom.columnFooterHeight,
         p: 2,

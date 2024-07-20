@@ -23,7 +23,8 @@ const Icon_Styles={
     bgcolor: 'primary.50'
   }
 }
-function BoardBar() {
+function BoardBar( props ) {
+  const { board } = props
   return (
     <Box sx={{
       width: '100%',
@@ -39,13 +40,13 @@ function BoardBar() {
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
         <Chip sx={Icon_Styles}
           icon={< DashboardIcon />}
-          label= 'HoaConDev MERN Stack Board'
+          label= {board?.title}
           clickable
         >
         </Chip>
         <Chip sx={Icon_Styles}
           icon={< VpnLockIcon />}
-          label= 'Public/Private Workspace'
+          label= {board?.type}
           clickable
         >
         </Chip>

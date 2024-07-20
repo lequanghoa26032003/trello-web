@@ -7,31 +7,37 @@ import CardMedia from '@mui/material/CardMedia'
 import GroupIcon from '@mui/icons-material/Group'
 import CommentIcon from '@mui/icons-material/Comment'
 import AttachmentIcon from '@mui/icons-material/Attachment'
-function Card( { Card01 } ) {
-  if (Card01) {
-    return (
-      <MuiCard sx={{ cursor:'pointer', overflow: 'unset' }}>
-        <CardContent>
-          <Typography>HoaconDev</Typography>
-        </CardContent>
-      </MuiCard>
-    )
+function Card( props ) {
+  const { card } = props
+  const shouldShowCardActions = () => {
+    return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
   }
   return (
     <MuiCard sx={{ cursor:'pointer', overflow: 'unset' }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image="https://trungquandev.com/wp-content/uploads/2021/05/trungquandev-cover-animation-1024x758.jpg"
-        title="green iguana"
-      />
+      {card?.cover &&
+        <CardMedia
+          sx={{ height: 140 }}
+          image={card.cover}
+        />
+      }
       <CardContent>
-        <Typography>HoaconDev</Typography>
+        <Typography>{card?.title}</Typography>
       </CardContent>
+      {shouldShowCardActions () &&
       <CardActions sx={{ p: '0 4px 8px 4px' }} >
-        <Button size="small" startIcon={<GroupIcon/>} >20</Button>
-        <Button size="small" startIcon={<CommentIcon/>} >20</Button>
-        <Button size="small" startIcon={<AttachmentIcon/>} >20</Button>
+        {!!card?.memberIds?.length &&
+        <Button size="small" startIcon={<GroupIcon/>} >{card?.memberIds?.length}</Button>
+        }
+        {!!card?.comments?.length &&
+        <Button size="small" startIcon={<CommentIcon/>} >{card?.comments?.length}</Button>
+        }
+        {!!card?.attachments?.length &&
+        <Button size="small" startIcon={<AttachmentIcon/>} >{card?.attachments?.length}</Button>
+        }
       </CardActions>
+      }
+
+
     </MuiCard>
   )
 }
