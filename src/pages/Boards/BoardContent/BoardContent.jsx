@@ -3,7 +3,8 @@ import ListColumns from './ListColumns/ListColumns'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import { mapOrder } from '~/ultis/sorts'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/ultis/format'
 import {
   DndContext,
   // KeyboardSensor,
@@ -60,7 +61,9 @@ function BoardContent( props ) {
       const nextOverColumn = nextColumns.find( column => column._id === overColumn._id )
       if (nextActiveColumn) {
         nextActiveColumn.cards =nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
-
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        }
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
       }
       if (nextOverColumn) {
@@ -71,6 +74,7 @@ function BoardContent( props ) {
           { ...activeDraggingCardData,
             columnId: nextOverColumn._id }
         )
+        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
 
       }
