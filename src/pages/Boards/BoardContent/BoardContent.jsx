@@ -8,8 +8,7 @@ import { generatePlaceholderCard } from '~/ultis/format'
 import {
   DndContext,
   // KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
+
   // PointerSensor,
   useSensor,
   useSensors,
@@ -17,6 +16,7 @@ import {
   defaultDropAnimationSideEffects,
   closestCorners
 } from '@dnd-kit/core'
+import {  MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors'
 import { useEffect, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 const ACTIVE_DRAG_ITEM_TYPE = {

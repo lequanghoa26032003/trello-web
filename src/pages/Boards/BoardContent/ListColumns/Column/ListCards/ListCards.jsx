@@ -20,7 +20,7 @@ function ListCards( props ) {
           backgroundColor: '#bfc2cf'
         },
         m: '0 5px',
-        p: '0 5px'
+        p: '0 5px 5px 5px'
       }} >
         {cards?.map((card) => {
           return <Card key={card?._id} card = {card} />
