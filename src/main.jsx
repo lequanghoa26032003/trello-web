@@ -4,12 +4,15 @@ import App from '~/App'
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles'
 import theme from '~/theme'
 import CssBaseline from '@mui/material/CssBaseline'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import GlobalStyles from '@mui/material/GlobalStyles'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <CssVarsProvider theme={theme}>
       <CssBaseline/>
       <App/>
+      <ToastContainer theme="colored" />
     </CssVarsProvider>
   </React.StrictMode>
 )

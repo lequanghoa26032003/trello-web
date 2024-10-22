@@ -1,4 +1,5 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 import Tooltip from '@mui/material/Tooltip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -55,7 +56,7 @@ function Column( props ) {
   const [newCardTite, setNewCardTitle] = useState('')
   const addNewCard = () => {
     if (!newCardTite) {
-      console.error('Thêm title đi')
+      toast.error('Thêm title đi')
       return
     }
     toggleOpenNewCardForm()
