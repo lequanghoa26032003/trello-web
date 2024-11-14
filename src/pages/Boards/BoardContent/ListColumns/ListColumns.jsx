@@ -9,14 +9,22 @@ import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortabl
 import { useState } from 'react'
 function ListColumns( props ) {
   const { columns } = props
+  const { createNewColumn } = props
+  const { createNewCard } = props
+
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => {setOpenNewColumnForm(!openNewColumnForm)}
   const [newColumnTite, setNewColumnTitle] = useState('')
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTite) {
       console.error('Thêm title đi')
       return
     }
+    const newColumnData = {
+      title: newColumnTite
+    }
+    await createNewColumn(newColumnData)
+
     toggleOpenNewColumnForm()
     setNewColumnTitle('')
   }
@@ -32,7 +40,7 @@ function ListColumns( props ) {
         '&::-webkit-scrollbar-track': { m: 2 }
       }} >
         {columns?.map((column) => {
-          return <Column key = {column._id} column = {column} />
+          return <Column key = {column._id} column = {column} createNewCard={createNewCard} />
         })}
         {!openNewColumnForm
           ?

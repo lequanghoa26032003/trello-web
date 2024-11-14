@@ -17,7 +17,6 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
-import { mapOrder } from '~/ultis/sorts'
 import TextField from '@mui/material/TextField'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -28,7 +27,8 @@ import theme from '~/theme'
 
 function Column( props ) {
   const { column } = props
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+  const { createNewCard } = props
+  const orderedCards =column.cards
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: column._id,
@@ -53,11 +53,16 @@ function Column( props ) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false)
   const toggleOpenNewCardForm = () => {setOpenNewCardForm(!openNewCardForm)}
   const [newCardTite, setNewCardTitle] = useState('')
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTite) {
       console.error('Thêm title đi')
       return
     }
+    const newCardData = {
+      title: newCardTite,
+      columnId: column._id
+    }
+    await createNewCard(newCardData)
     toggleOpenNewCardForm()
     setNewCardTitle('')
   }

@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
-import { mapOrder } from '~/ultis/sorts'
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/ultis/format'
 import {
@@ -14,10 +13,10 @@ import {
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners
+  closestCorners,
 } from '@dnd-kit/core'
-import {  MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors'
-import { useEffect, useState } from 'react'
+import { MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors'
+import { useEffect, useState, useCallback } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -29,6 +28,13 @@ function BoardContent( props ) {
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 200 } })
   const sensors = useSensors(mouseSensor, touchSensor)
   const { board } = props
+  const { createNewColumn } = props
+  const { createNewCard } = props
+  const { moveColumn } = props
+  const { moveCardInTheSameColumn } = props
+
+  moveCardInTheSameColumn
+
   const [orderredColumns, setOrderedColumns] = useState([])
   const [activeDragItemId, setactiveDragItemId] = useState(null)
   const [activeDragItemType, setactiveDragItemType] = useState(null)
@@ -36,7 +42,7 @@ function BoardContent( props ) {
   const [oldColumnWhenDraggingCard, setoldColumnWhenDraggingCard] = useState(null)
 
   useEffect(() => {
-    setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
+    setOrderedColumns(board.columns)
   }, [board])
   const findColumnByCardId = (cardId) => {
     return orderredColumns.find( column => column?.cards?.map(card => card._id).includes(cardId) )
@@ -115,7 +121,6 @@ function BoardContent( props ) {
 
   }
   const handleDragEnd = (event) => {
-    // console.log('handleDragEnd', event)
     const { active, over } = event
     if (!over) return
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && active.id !== over.id) {
@@ -123,11 +128,9 @@ function BoardContent( props ) {
       const { id: overCardId } = over
       const activeColumn = findColumnByCardId(activeDraggingCardId)
       const overColumn = findColumnByCardId(overCardId)
-
       if (!activeColumn || !overColumn) return
-
       if (oldColumnWhenDraggingCard._id !== overColumn._id) {
-        moveCardBetweenDifferentColumns (
+        moveCardBetweenDifferentColumns(
           overColumn,
           overCardId,
           over,
@@ -137,37 +140,34 @@ function BoardContent( props ) {
           activeDraggingCardData
         )
       } else {
-        const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex( c => c._id === activeDragItemId)
-        const newCardIndex = overColumn?.cards?.findIndex( c => c._id === overCardId)
+        const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDraggingCardId)
+        const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
+        if (oldCardIndex === -1 || newCardIndex === -1) return
         const dndOrderedCards = arrayMove(oldColumnWhenDraggingCard?.cards, oldCardIndex, newCardIndex)
+        const dndOrderedCardIds = dndOrderedCards.map(card => card._id)
+
         setOrderedColumns(prevColumns => {
-
           const nextColumns = cloneDeep(prevColumns)
-
-          const targetColumn = nextColumns.find( column => column._id === overColumn._id )
-          targetColumn.cards = dndOrderedCards
-          targetColumn.cardOrderIds = dndOrderedCards.map(card => card._id)
+          const targetColumn = nextColumns.find(column => column._id === overColumn._id)
+          if (targetColumn) {
+            targetColumn.cards = dndOrderedCards
+            targetColumn.cardOrderIds = dndOrderedCards.map(card => card._id)
+          }
           return nextColumns
         })
-
+        moveCardInTheSameColumn(dndOrderedCards, dndOrderedCardIds, oldColumnWhenDraggingCard._id)
       }
-
     }
-    if (activeDragItemType===ACTIVE_DRAG_ITEM_TYPE.COLUMN && active.id !== over.id) {
-      const oldIndex = orderredColumns.findIndex( c => c._id === active.id)
-      const newIndex = orderredColumns.findIndex( c => c._id === over.id)
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && active.id !== over.id) {
+      const oldIndex = orderredColumns.findIndex(c => c._id === active.id)
+      const newIndex = orderredColumns.findIndex(c => c._id === over.id)
+      if (oldIndex === -1 || newIndex === -1) return
       const dndOrderredColumns = arrayMove(orderredColumns, oldIndex, newIndex)
-      // const dndOrderredColumnsIds = dndOrderredColumns.map(c => c._id)
-      // console.log('dndOrderredColumns', dndOrderredColumns)
-      // console.log('dndOrderredColumnsIds', dndOrderredColumnsIds)
       setOrderedColumns(dndOrderredColumns)
-    }
-    setactiveDragItemId(null)
-    setactiveDragItemType(null)
-    setactiveDragItemData(null)
-    setoldColumnWhenDraggingCard(null)
-  }
+      moveColumn(dndOrderredColumns)
 
+    }
+  }
   const customdropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
@@ -178,13 +178,22 @@ function BoardContent( props ) {
     })
   }
   return (
-    <DndContext onDragStart={ handleDragStart } onDragOver={ handleDragOver } onDragEnd={ handleDragEnd } sensors={sensors} collisionDetection={closestCorners} >
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragStart={ handleDragStart }
+      onDragOver={ handleDragOver }
+      onDragEnd={ handleDragEnd } >
       <Box sx={{
         bgcolor: ( theme ) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2' ),
         width: '100%',
         height: (theme) => theme.trelloCustom.boardContentHeight
       }}>
-        <ListColumns columns= {orderredColumns} />
+        <ListColumns
+          columns= {orderredColumns}
+          createNewColumn={createNewColumn}
+          createNewCard={createNewCard}
+        />
         <DragOverlay dropAnimation={customdropAnimation}>
           {!activeDragItemType && null}
           {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}
