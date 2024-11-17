@@ -36,8 +36,6 @@ function Card( props ) {
         display: card?.FE_PlaceholderCard ? 'none' : 'block',
         border: '1px solid transparent',
         '&:hover': { borderColor: (theme) => theme.palette.primary.main }
-        // overflow: card?.FE_PlaceholderCard ? 'hidden' : 'unset',
-        // height: card?.FE_PlaceholderCard ? '0px' : 'unset'
       }}
     >
       {card?.cover &&

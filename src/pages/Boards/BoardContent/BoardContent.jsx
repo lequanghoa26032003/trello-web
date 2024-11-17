@@ -6,9 +6,6 @@ import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/ultis/format'
 import {
   DndContext,
-  // KeyboardSensor,
-
-  // PointerSensor,
   useSensor,
   useSensors,
   DragOverlay,
@@ -30,10 +27,13 @@ function BoardContent( props ) {
   const { board } = props
   const { createNewColumn } = props
   const { createNewCard } = props
-  const { moveColumn } = props
+  const { moveColumns } = props
   const { moveCardInTheSameColumn } = props
+  const { moveCardToDifferentColumn } = props
+  const { deleteColumnDetails } = props
 
-  moveCardInTheSameColumn
+
+  // moveCardInTheSameColumn
 
   const [orderredColumns, setOrderedColumns] = useState([])
   const [activeDragItemId, setactiveDragItemId] = useState(null)
@@ -54,7 +54,8 @@ function BoardContent( props ) {
     active,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns(prevColumns => {
       const overCardIndex = overColumn?.cards?.findIndex( card => card._id === overCardId)
@@ -83,6 +84,14 @@ function BoardContent( props ) {
         nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
 
+      }
+      if (triggerFrom === 'handleDragEnd') {
+        moveCardToDifferentColumn(
+          activeDraggingCardId,
+          oldColumnWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        )
       }
       return nextColumns
     })
@@ -114,7 +123,8 @@ function BoardContent( props ) {
         active,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        'handleDragEnd'
       )
     }
 
@@ -129,6 +139,7 @@ function BoardContent( props ) {
       const activeColumn = findColumnByCardId(activeDraggingCardId)
       const overColumn = findColumnByCardId(overCardId)
       if (!activeColumn || !overColumn) return
+
       if (oldColumnWhenDraggingCard._id !== overColumn._id) {
         moveCardBetweenDifferentColumns(
           overColumn,
@@ -137,7 +148,8 @@ function BoardContent( props ) {
           active,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          'handleDragEnd'
         )
       } else {
         const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDraggingCardId)
@@ -163,9 +175,8 @@ function BoardContent( props ) {
       const newIndex = orderredColumns.findIndex(c => c._id === over.id)
       if (oldIndex === -1 || newIndex === -1) return
       const dndOrderredColumns = arrayMove(orderredColumns, oldIndex, newIndex)
+      moveColumns(dndOrderredColumns)
       setOrderedColumns(dndOrderredColumns)
-      moveColumn(dndOrderredColumns)
-
     }
   }
   const customdropAnimation = {
@@ -193,6 +204,7 @@ function BoardContent( props ) {
           columns= {orderredColumns}
           createNewColumn={createNewColumn}
           createNewCard={createNewCard}
+          deleteColumnDetails={deleteColumnDetails}
         />
         <DragOverlay dropAnimation={customdropAnimation}>
           {!activeDragItemType && null}

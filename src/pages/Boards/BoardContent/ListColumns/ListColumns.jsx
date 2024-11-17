@@ -4,20 +4,21 @@ import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
-
+import { toast } from 'react-toastify'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
 function ListColumns( props ) {
   const { columns } = props
   const { createNewColumn } = props
   const { createNewCard } = props
+  const { deleteColumnDetails } = props
 
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => {setOpenNewColumnForm(!openNewColumnForm)}
   const [newColumnTite, setNewColumnTitle] = useState('')
   const addNewColumn = async () => {
     if (!newColumnTite) {
-      console.error('Thêm title đi')
+      toast.error('Thêm title đi')
       return
     }
     const newColumnData = {
@@ -39,9 +40,12 @@ function ListColumns( props ) {
         overflowY: 'hidden',
         '&::-webkit-scrollbar-track': { m: 2 }
       }} >
-        {columns?.map((column) => {
-          return <Column key = {column._id} column = {column} createNewCard={createNewCard} />
-        })}
+        {columns?.map(column => <Column
+          key = {column._id}
+          column = {column}
+          createNewCard={createNewCard}
+          deleteColumnDetails={deleteColumnDetails}
+        />)}
         {!openNewColumnForm
           ?
           <Box onClick={toggleOpenNewColumnForm}
