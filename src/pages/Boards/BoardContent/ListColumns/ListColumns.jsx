@@ -7,11 +7,17 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
+import { createNewColumnAPI } from '~/apis'
+import { generatePlaceholderCard } from '~/ultis/format'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloneDeep } from 'lodash'
+
 function ListColumns( props ) {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   const { columns } = props
-  const { createNewColumn } = props
-  const { createNewCard } = props
-  const { deleteColumnDetails } = props
 
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => {setOpenNewColumnForm(!openNewColumnForm)}
@@ -24,8 +30,18 @@ function ListColumns( props ) {
     const newColumnData = {
       title: newColumnTite
     }
-    await createNewColumn(newColumnData)
+    // Gọi API tạo mới column và làm lại dữ liệu State Board
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
 
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+    dispatch(updateCurrentActiveBoard(newBoard))
     toggleOpenNewColumnForm()
     setNewColumnTitle('')
   }
@@ -43,8 +59,6 @@ function ListColumns( props ) {
         {columns?.map(column => <Column
           key = {column._id}
           column = {column}
-          createNewCard={createNewCard}
-          deleteColumnDetails={deleteColumnDetails}
         />)}
         {!openNewColumnForm
           ?

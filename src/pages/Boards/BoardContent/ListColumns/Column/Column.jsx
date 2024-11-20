@@ -24,10 +24,18 @@ import { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
+import {
+  createNewCardAPI,
+  deleteColumnDetailsAPI
+} from '~/apis'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloneDeep } from 'lodash'
 function Column( props ) {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   const { column } = props
-  const { createNewCard } = props
-  const { deleteColumnDetails } = props
   const orderedCards = column.cards
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -62,7 +70,25 @@ function Column( props ) {
       title: newCardTite,
       columnId: column._id
     }
-    await createNewCard(newCardData)
+    // Gọi API tạo mới Card và làm lại dữ liệu State Board
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+    // const newBoard = { ...board }
+    const newBoard = cloneDeep(board)
+    const columnToUpdate = newBoard.columns.find( column => column._id === createdCard.columnId)
+    if (columnToUpdate) {
+      if (columnToUpdate.cards.some( card => card.FE_PlaceholderCard )) {
+        columnToUpdate.cards = [createdCard]
+        columnToUpdate.cardOrderIds = [createdCard._id]
+      } else {
+        columnToUpdate.cards.push(createdCard)
+        columnToUpdate.cardOrderIds.push(createdCard._id)
+      }
+
+    }
+    dispatch(updateCurrentActiveBoard(newBoard))
     toggleOpenNewCardForm()
     setNewCardTitle('')
   }
@@ -79,7 +105,13 @@ function Column( props ) {
       // confirmationButtonProps: { color: 'error' },
       // cancellationButtonProps: { color: 'primary' }
     }) . then( () => {
-      deleteColumnDetails(column._id)
+      const newBoard = { ...board }
+      newBoard.columns = newBoard.columns.filter( c => c._id !== column._id)
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter( _id => _id !== column._id)
+      dispatch(updateCurrentActiveBoard(newBoard))
+      deleteColumnDetailsAPI(column._id).then( res => {
+        toast.success(res?.deleteResult)
+      })
     }).cath(() => {})
   }
   return (
