@@ -25,8 +25,10 @@ function Board() {
   useEffect( () => {
     const boardId= '6716070c2349351537af7b6b'
     fetchBoardDetailsAPI(boardId).then( board => {
-      board.columns = mapOrder(board?.columns, board?.columnOrderIds, '_id')
+      // Sắp xếp thứ tự các column luôn ở đây trước khi đưa dữ liệu xuống bên dưới các component con
+      board.columns = mapOrder(board.columns, board.columnOrderIds, '_id')
       board.columns.forEach( column => {
+        // Khi f5 trang web cần xử lý kéo thả vào một column rỗng 
         if (isEmpty(column.cards)) {
           column.cards = [generatePlaceholderCard(column)]
           column.cardOrderIds = [generatePlaceholderCard(column)._id]
