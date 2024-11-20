@@ -10,33 +10,30 @@ import {
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners,
+  closestCorners
 } from '@dnd-kit/core'
 import { MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 function BoardContent( props ) {
-  // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
+
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 200 } })
   const sensors = useSensors(mouseSensor, touchSensor)
   const { board } = props
-  const { createNewColumn } = props
-  const { createNewCard } = props
   const { moveColumns } = props
   const { moveCardInTheSameColumn } = props
   const { moveCardToDifferentColumn } = props
-  const { deleteColumnDetails } = props
 
 
-  // moveCardInTheSameColumn
+  moveCardInTheSameColumn
 
-  const [orderredColumns, setOrderedColumns] = useState([])
-  const [activeDragItemId, setactiveDragItemId] = useState(null)
+  const [orderedColumns, setOrderedColumns] = useState([])
+  const [, setactiveDragItemId] = useState(null)
   const [activeDragItemType, setactiveDragItemType] = useState(null)
   const [activeDragItemData, setactiveDragItemData] = useState(null)
   const [oldColumnWhenDraggingCard, setoldColumnWhenDraggingCard] = useState(null)
@@ -45,7 +42,7 @@ function BoardContent( props ) {
     setOrderedColumns(board.columns)
   }, [board])
   const findColumnByCardId = (cardId) => {
-    return orderredColumns.find( column => column?.cards?.map(card => card._id).includes(cardId) )
+    return orderedColumns.find( column => column?.cards?.map(card => card._id).includes(cardId) )
   }
   const moveCardBetweenDifferentColumns = (
     overColumn,
@@ -171,12 +168,12 @@ function BoardContent( props ) {
       }
     }
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && active.id !== over.id) {
-      const oldIndex = orderredColumns.findIndex(c => c._id === active.id)
-      const newIndex = orderredColumns.findIndex(c => c._id === over.id)
+      const oldIndex = orderedColumns.findIndex(c => c._id === active.id)
+      const newIndex = orderedColumns.findIndex(c => c._id === over.id)
       if (oldIndex === -1 || newIndex === -1) return
-      const dndOrderredColumns = arrayMove(orderredColumns, oldIndex, newIndex)
-      moveColumns(dndOrderredColumns)
-      setOrderedColumns(dndOrderredColumns)
+      const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex)
+      moveColumns(dndOrderedColumns)
+      setOrderedColumns(dndOrderedColumns)
     }
   }
   const customdropAnimation = {
@@ -200,12 +197,7 @@ function BoardContent( props ) {
         width: '100%',
         height: (theme) => theme.trelloCustom.boardContentHeight
       }}>
-        <ListColumns
-          columns= {orderredColumns}
-          createNewColumn={createNewColumn}
-          createNewCard={createNewCard}
-          deleteColumnDetails={deleteColumnDetails}
-        />
+        <ListColumns columns = {orderedColumns}/>
         <DragOverlay dropAnimation={customdropAnimation}>
           {!activeDragItemType && null}
           {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}
