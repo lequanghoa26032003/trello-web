@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authorizeAxiosInstance from '~/ultis/authorizeAxios'
-
+import { toast } from 'react-toastify'
 import { API_ROOT } from '~/ultis/constants'
 // Khời tạo giá trị State của Slice trong Redux
 const initialState = {
@@ -15,6 +15,14 @@ export const loginUserAPI = createAsyncThunk(
   }
 )
 
+export const logoutUserAPI = createAsyncThunk(
+  'user/logoutUserAPI',
+  async (showSuccessMessage = true) => {
+    const response = await authorizeAxiosInstance.delete(`${API_ROOT}/v1/users/logout`)
+    if (showSuccessMessage) toast.success('Logged out successfully!')
+    return response.data
+  }
+)
 // Khởi tạo một Slice trong kho lưu trữ Redux Store
 export const userSlice = createSlice({
   name: 'user',
@@ -28,6 +36,11 @@ export const userSlice = createSlice({
       const user = action.payload
 
       state.currentUser = user
+    })
+    builder.addCase(logoutUserAPI.fulfilled, (state) => {
+      // action.payload chính là response.data trả về ở trên
+
+      state.currentUser = null
     })
   }
 })

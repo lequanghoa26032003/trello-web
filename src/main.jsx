@@ -13,7 +13,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 const persistor = persistStore(store)
-
+// kỹ thuật inject store
+import { injectStore } from '~/ultis/authorizeAxios'
+injectStore(store)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename='/' >
     <Provider store={store}>
@@ -22,8 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <ConfirmProvider defaultOptions={{
             allowClose: false,
             dialogProps: { maxWidth: 'xs' },
-            confirmationButtonProps: { color: 'error' },
-            cancellationButtonProps: { color: 'primary' }
+            confirmationButtonProps:'Confirm',
+            cancellationButtonProps: 'Cancel'
           }} >
             <CssBaseline/>
             <App/>
