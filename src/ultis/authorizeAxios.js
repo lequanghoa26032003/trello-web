@@ -1,14 +1,14 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { interceptorLoadingElements } from './format'
-const authorizeAxiosInstance = axios.create()
+const authorizedAxiosInstance = axios.create()
 
-authorizeAxiosInstance.defaults.timeout = 10000 * 60 * 10
+authorizedAxiosInstance.defaults.timeout = 10000 * 60 * 10
 
-authorizeAxiosInstance.defaults.withCredentials = true
+authorizedAxiosInstance.defaults.withCredentials = true
 
 // interceptor request: can thiệp vào giữa những cái req API
-authorizeAxiosInstance.interceptors.request.use( (config) => {
+authorizedAxiosInstance.interceptors.request.use( (config) => {
   // chặn spam click
   interceptorLoadingElements(true)
   return config
@@ -18,7 +18,7 @@ authorizeAxiosInstance.interceptors.request.use( (config) => {
 })
 
 // interceptor request: can thiệp vào giữa những cái res nhận về
-authorizeAxiosInstance.interceptors.response.use( (response) => {
+authorizedAxiosInstance.interceptors.response.use( (response) => {
   // chặn spam click
   interceptorLoadingElements(false)
   return response
@@ -26,7 +26,6 @@ authorizeAxiosInstance.interceptors.response.use( (response) => {
   // Mọi mã http status nằm ngoài 2xx sẽ là error và rơi vào đây
   // chặn spam click
   interceptorLoadingElements(true)
-  console.log(error)
   let errorMessage = error?.message
   if (error?.response?.data?.message) {
     errorMessage = error?.response?.data?.message
@@ -37,4 +36,4 @@ authorizeAxiosInstance.interceptors.response.use( (response) => {
   return Promise.reject(error)
 })
 
-export default authorizeAxiosInstance
+export default authorizedAxiosInstance
