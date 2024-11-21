@@ -4,6 +4,7 @@ import AppBar from '~/components/AppBar/Menu'
 import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
 import CircularProgress from '@mui/material/CircularProgress'
+// import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 
 import {
   updateBoardDetailsAPI,
@@ -19,15 +20,18 @@ import {
 
 } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 function Board() {
   const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
+  const { boardId } = useParams()
+  // console.log(boardId)
   useEffect( () => {
-    const boardId= '6716070c2349351537af7b6b'
+    // const boardId= '6716070c2349351537af7b6b'
     // Call API
     dispatch(fetchBoardDetailsAPI(boardId))
 
-  }, [dispatch])
+  }, [dispatch, boardId])
 
 
   const moveColumns = async (dndOrderedColumns) => {
@@ -69,6 +73,7 @@ function Board() {
   }
   if (!board) {
     return (
+      // <PageLoadingSpinner caption="Loading Board..." />
       <Box sx={{
         display: 'flex',
         alignItems: 'center',

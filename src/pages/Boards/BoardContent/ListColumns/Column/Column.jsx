@@ -98,7 +98,7 @@ function Column( props ) {
       title : 'Delete column?',
       description : 'Are you sure you want to delete this column?',
       confirmationText : 'Đồng ý',
-      cancellationText : 'Hủy',
+      cancellationText : 'Hủy'
       // allowClose: false,
       // content:'',
       // dialogProps: { maxWidth: 'sm' },
@@ -273,6 +273,7 @@ function Column( props ) {
               />
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Button
+                  className="interceptor-loading"
                   onClick={addNewCard}
                   variant="contained" color="success" size="small"
                   sx={{
