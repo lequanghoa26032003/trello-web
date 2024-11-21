@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import AppBar from '~/components/AppBar/Menu'
 import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
-import CircularProgress from '@mui/material/CircularProgress'
-// import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
+// import CircularProgress from '@mui/material/CircularProgress'
+import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 
 import {
   updateBoardDetailsAPI,
@@ -12,7 +12,6 @@ import {
   moveCardToDifferentBoardAPI
 } from '~/apis'
 import { cloneDeep } from 'lodash'
-import { Box, Typography } from '@mui/material'
 import {
   fetchBoardDetailsAPI,
   updateCurrentActiveBoard,
@@ -73,17 +72,7 @@ function Board() {
   }
   if (!board) {
     return (
-      // <PageLoadingSpinner caption="Loading Board..." />
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-        gap: 2 }}>
-        <CircularProgress />
-        <Typography >Loading...</Typography>
-      </Box>
+      <PageLoadingSpinner caption="Loading Board..." />
     )
   }
   return (
