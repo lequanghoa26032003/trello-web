@@ -44,7 +44,7 @@ function Board() {
   const moveCardInTheSameColumn = ( dndOrderedCards, dndOrderedCardIds, columnId ) => {
     // const newBoard = { ...board }
     const newBoard = cloneDeep(board)
-    const columnToUpdate = newBoard.columns.find( c => c._id === columnId)
+    const columnToUpdate = newBoard.columns.find( column => column._id === columnId)
     if (columnToUpdate) {
       columnToUpdate.cards = dndOrderedCards
       columnToUpdate.cardOrderIds = dndOrderedCardIds
