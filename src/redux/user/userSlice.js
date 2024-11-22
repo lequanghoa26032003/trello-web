@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authorizeAxiosInstance from '~/ultis/authorizeAxios'
 import { toast } from 'react-toastify'
 import { API_ROOT } from '~/ultis/constants'
+import { update } from 'lodash'
 // Khời tạo giá trị State của Slice trong Redux
 const initialState = {
   currentUser: null
@@ -23,6 +24,14 @@ export const logoutUserAPI = createAsyncThunk(
     return response.data
   }
 )
+
+export const updateUserAPI = createAsyncThunk(
+  'user/updateUserAPI',
+  async (data) => {
+    const response = await authorizeAxiosInstance.put(`${API_ROOT}/v1/users/update`, data)
+    return response.data
+  }
+)
 // Khởi tạo một Slice trong kho lưu trữ Redux Store
 export const userSlice = createSlice({
   name: 'user',
@@ -41,6 +50,12 @@ export const userSlice = createSlice({
       // action.payload chính là response.data trả về ở trên
 
       state.currentUser = null
+    })
+    builder.addCase(updateUserAPI.fulfilled, (state, action) => {
+      // action.payload chính là response.data trả về ở trên
+      const user = action.payload
+
+      state.currentUser = user
     })
   }
 })

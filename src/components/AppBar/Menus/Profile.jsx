@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, logoutUserAPI } from '~/redux/user/userSlice'
 import { useConfirm } from 'material-ui-confirm'
+import { Link } from 'react-router-dom'
 
 function Profile() {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -65,17 +66,21 @@ function Profile() {
         onClick={handleClose}
 
         MenuListProps={{
-          'aria-labelledby': 'basic-button-recent',
+          'aria-labelledby': 'basic-button-profiles'
         }}
       >
-        <MenuItem sx={{
-          '&:hover': {
-            color: 'success.light'
-          }
+        <Link to="/settings/account" style={{
+          color: 'inherit'
         }}>
-          <Avatar sx={{ height: 28, width: 28, mr:2 }}
-            src={currentUser?.avatar} /> Profile
-        </MenuItem>
+          <MenuItem sx={{
+            '&:hover': {
+              color: 'success.light'
+            }
+          }}>
+            <Avatar sx={{ height: 28, width: 28, mr:2 }}
+              src={currentUser?.avatar} /> Profile
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
