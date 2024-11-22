@@ -21,6 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 import { Link } from 'react-router-dom'
+import { verifyUserAPI } from '~/apis'
 
 function AppBar() {
   const [searchValue, setSearchValue]= useState('')
@@ -37,10 +38,12 @@ function AppBar() {
       bgcolor: (theme) => (theme.palette.mode === 'dark'? '#2c3e50': '#1565c0' )
     }}>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
-        <AppsIcon sx= {{ color: 'white' } } />
-        <Link to="/" style={{
-          color: 'inherit'
-        }}>
+        <Link to="/boards" >
+          <Tooltip title="Board List">
+            <AppsIcon sx = {{ color: 'white', verticalAlign: 'middle' }} />
+          </Tooltip>
+        </Link>
+        <Link to="/" >
           <Box sx= {{ display: 'flex', alignItems: 'center', gap:1 }}>
             <SvgIcon component={StarIcon} inheritViewBox fontSize="small" sx= { { color: 'white' } } />
             <Typography variant="span" sx= {{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }} >

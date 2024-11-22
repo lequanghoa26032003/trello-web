@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import Board from '~/pages/Boards/_id'
-// import Boards from '~/pages/Boards'
+import Boards from '~/pages/Boards'
 
 import NotFound from '~/pages/404/NotFound'
 import Auth from '~/pages/Auth/Auth'
@@ -29,7 +29,7 @@ function App() {
         <Route path='/settings/account' element={<Settings/>} />
         <Route path='/settings/security' element={<Settings/>} />
 
-        {/* <Route path='/boards' element={<Boards/>} /> */}
+        <Route path='/boards' element={<Boards/>} />
       </Route>
       <Route path='/login' element={<Auth/>} />
       <Route path='/register' element={<Auth/>} />
