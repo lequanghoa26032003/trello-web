@@ -6,9 +6,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Chip from '@mui/material/Chip'
-import Avatar from '@mui/material/Avatar'
-import AvatarGroup from '@mui/material/AvatarGroup'
-import User from '~/assets/hoa.jpg'
+import BoardUserGroup from './BoardUserGroup'
 import { Button } from '@mui/material'
 const Icon_Styles={
   color: 'white',
@@ -82,25 +80,8 @@ function BoardBar( props ) {
         >
           Invite
         </Button>
-        <AvatarGroup sx={{
-          '& .MuiAvatar-root ':{
-            height:'34px',
-            width: '34px',
-            fontSize: '16px',
-            border: 'none',
-            color: 'white',
-            '&:first-of-type': { bgcolor:'#a4b0be' }
-          }
-        }} max={7}>
-          <Avatar title="HoaconDev" alt="HoaDev" src={User} />
-          <Avatar title="HoaconDev" alt="Travis Howard" src={User} />
-          <Avatar title="HoaconDev" alt="Cindy Baker" src={User} />
-          <Avatar title="HoaconDev" alt="Agnes Walker" src={User} />
-          <Avatar title="HoaconDev" alt="Trevor Henderson" src={User} />
-          <Avatar title="HoaconDev" alt="Cindy Baker" src={User} />
-          <Avatar title="HoaconDev" alt="Agnes Walker" src={User} />
-          <Avatar title="HoaconDev" alt="Trevor Henderson" src={User} />
-        </AvatarGroup>
+
+        <BoardUserGroup />
       </Box>
 
 
