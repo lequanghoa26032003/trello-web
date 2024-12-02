@@ -30,6 +30,7 @@ function Card( props ) {
   const setActiveCard = () => {
     dispatch(updateCurrentActiveCard(card))
   }
+
   return (
     <MuiCard
       onClick={setActiveCard}
