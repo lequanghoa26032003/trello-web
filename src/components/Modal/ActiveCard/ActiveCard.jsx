@@ -43,6 +43,7 @@ import {
 
 } from '~/redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '~/apis'
+import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -81,12 +82,15 @@ function ActiveCard() {
 
     dispatch(updateCurrentActiveCard(updatedCard))
     //
+    dispatch(updateCardInBoard(updatedCard))
     return updatedCard
   }
   const onUpdateCardTitle = (newTitle) => {
     callApiUpdateCard({ title: newTitle.trim() })
   }
-
+  const onUpdateCardDescription = (newDescription) => {
+    callApiUpdateCard({ description: newDescription })
+  }
   const onUploadCardCover = (event) => {
     console.log(event.target?.files[0])
     const error = singleFileValidator(event.target?.files[0])
@@ -98,6 +102,10 @@ function ActiveCard() {
     reqData.append('cardCover', event.target?.files[0])
 
     // Gọi API...
+    toast.promise(
+      callApiUpdateCard(reqData).finally(() => event.target.value = ''),
+      { pending: 'Update'}
+    )
   }
 
   return (
@@ -127,11 +135,11 @@ function ActiveCard() {
         }}>
           <CancelIcon color="error" sx={{ '&:hover': { color: 'error.light' } }} onClick={handleCloseModal} />
         </Box>
-        {activeCard?.cardCover &&
+        {activeCard?.cover &&
         <Box sx={{ mb: 4 }}>
           <img
             style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
-            src={activeCard?.cardCover}
+            src={activeCard?.cover}
             alt="card-cover"
           />
         </Box>
@@ -163,7 +171,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor
+                cardDescriptionProp={activeCard?.description}
+                handleUpdateCardDescription={onUpdateCardDescription}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>

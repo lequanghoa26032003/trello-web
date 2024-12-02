@@ -81,7 +81,7 @@ function BoardBar( props ) {
           Invite
         </Button>
 
-        <BoardUserGroup />
+        <BoardUserGroup boardUsers= { board?.FE_allUsers }/>
       </Box>
 
 

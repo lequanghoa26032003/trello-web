@@ -14,6 +14,7 @@ const activeCardSlice = createSlice({
       const fullCard = action.payload
       state.currentActiveCard = fullCard
     }
+
   },
   extraReducers: (builder) => {}
 })
