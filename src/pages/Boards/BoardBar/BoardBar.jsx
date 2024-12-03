@@ -4,10 +4,9 @@ import VpnLockIcon from '@mui/icons-material/VpnLock'
 import AddToDriveIcon from '@mui/icons-material/AddToDrive'
 import BoltIcon from '@mui/icons-material/Bolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Chip from '@mui/material/Chip'
 import BoardUserGroup from './BoardUserGroup'
-import { Button } from '@mui/material'
+import InviteBoardUser from './InviteBoardUser'
 const Icon_Styles={
   color: 'white',
   bgcolor: 'transparent',
@@ -69,17 +68,7 @@ function BoardBar( props ) {
       </Box>
 
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
-        <Button
-          startIcon={< PersonAddIcon />}
-          variant="outlined"
-          sx= {{
-            color: 'white',
-            borderColor: 'white',
-            '&:hover': { borderColor: 'white' }
-          }}
-        >
-          Invite
-        </Button>
+        <InviteBoardUser boardId={board._id}/>
 
         <BoardUserGroup boardUsers= { board?.FE_allUsers }/>
       </Box>
