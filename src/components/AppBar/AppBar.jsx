@@ -23,6 +23,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Link } from 'react-router-dom'
 import { verifyUserAPI } from '~/apis'
 import Notifications from './Notifications/Notifications'
+import AutoCompleteSearchBoard from './SearchBoards/AutoCompleteSearchBoard'
 function AppBar() {
   const [searchValue, setSearchValue]= useState('')
   return (
@@ -60,54 +61,7 @@ function AppBar() {
         </Box>
       </Box>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >
-        <TextField
-          id="outlined-basic"
-          label="Search..."
-          variant="outlined"
-          value={searchValue}
-          onChange={ ( e ) => setSearchValue(e.target.value) }
-          size="small"
-          sx={{
-            minWidth: '120px',
-            maxWidth: '200px',
-            '& label':{ color: 'white' },
-            '& label.Mui-focused': { color: 'white' },
-            '& input': { color: 'white' },
-            '& .MuiOutlinedInput-root':{
-              '& fieldset': {
-                borderColor: 'white'
-              },
-              '&:hover fieldset':{
-                borderColor: 'white'
-              },
-              '&.Mui-focused fieldset':{
-                borderColor: 'white'
-              },
-              '&:hover [data-testid="SearchIcon"]': {
-                opacity: '1'
-              }
-            }
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color:'white', opacity: '0.7' }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <CloseIcon
-                  sx={{
-                    color: searchValue ? 'white' : 'transparent',
-                    cursor: 'pointer'
-                  }}
-                  onClick={ ( ) => setSearchValue((''))}
-                />
-              </InputAdornment>
-            )
-          }}
-        />
-
+        <AutoCompleteSearchBoard />
         <ModeSelect/>
 
         <Notifications />
