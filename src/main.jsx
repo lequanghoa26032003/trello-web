@@ -17,10 +17,13 @@ const persistor = persistStore(store)
 // kỹ thuật inject store
 import { injectStore } from '~/ultis/authorizeAxios'
 injectStore(store)
+import { io } from 'socket.io-client'
+import { API_ROOT } from '~/ultis/constants'
+export const socketIoInstance = io(API_ROOT)
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename='/' >
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <BrowserRouter basename='/' >
         <CssVarsProvider theme={theme}>
           <ConfirmProvider defaultOptions={{
             allowClose: false,
@@ -34,9 +37,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <ToastContainer theme="colored" />
           </ConfirmProvider>
         </CssVarsProvider>
-      </PersistGate>
-    </Provider>
-  </BrowserRouter>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
 
 )
 
