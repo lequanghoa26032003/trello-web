@@ -17,9 +17,7 @@ const persistor = persistStore(store)
 // kỹ thuật inject store
 import { injectStore } from '~/ultis/authorizeAxios'
 injectStore(store)
-import { io } from 'socket.io-client'
-import { API_ROOT } from '~/ultis/constants'
-export const socketIoInstance = io(API_ROOT)
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
