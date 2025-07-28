@@ -32,7 +32,7 @@ function Recent() {
         endIcon={ <ExpandMoreIcon />}
         sx={{ color: 'white' }}
       >
-        Recent
+        Gần đây
       </Button>
       <Menu
         id="basic-menu-recent"

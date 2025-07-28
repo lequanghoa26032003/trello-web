@@ -57,7 +57,7 @@ function AppBar() {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="outlined" startIcon={ <LibraryAddIcon /> } sx={{ color: 'white' }} >Create</Button>
+          <Button variant="outlined" startIcon={ <LibraryAddIcon /> } sx={{ color: 'white' }} >Tạo mới</Button>
         </Box>
       </Box>
       <Box sx= {{ display: 'flex', alignItems: 'center', gap:2 }} >

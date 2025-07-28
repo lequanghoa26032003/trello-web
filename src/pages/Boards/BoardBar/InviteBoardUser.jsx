@@ -7,11 +7,34 @@ import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 import { EMAIL_RULE, FIELD_REQUIRED_MESSAGE, EMAIL_RULE_MESSAGE } from '~/ultis/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { inviteUserToBoarAPI } from '~/apis'
 import { socketIoInstance } from '~/socketClient'
 function InviteBoardUser( { boardId } ) {
+  const [members, setMembers] = useState([
+    { id: 1, name: 'Hòa Lê Quang', email: 'hoaflo2603@gmail.com', role: 'Thành viên' }
+  ])
+  const [selectedMember, setSelectedMember] = useState(null)
+  const [anchorMenuElement, setAnchorMenuElement] = useState(null)
+  const handleOpenMenu = (event, member) => {
+    setSelectedMember(member)
+    setAnchorMenuElement(event.currentTarget)
+  }
+  const handleCloseMenu = () => {
+    setAnchorMenuElement(null)
+    setSelectedMember(null)
+  }
+  const handleChangeRole = (role) => {
+    setMembers((prev) =>
+      prev.map((member) =>
+        member.id === selectedMember.id ? { ...member, role } : member
+      )
+    )
+    handleCloseMenu()
+  }
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -41,7 +64,7 @@ function InviteBoardUser( { boardId } ) {
 
   return (
     <Box>
-      <Tooltip title="Invite user to this board!">
+      <Tooltip title="Mời thành viên vào bảng!">
         <Button
           aria-describedby={popoverId}
           onClick={handleTogglePopover}
@@ -49,7 +72,7 @@ function InviteBoardUser( { boardId } ) {
           startIcon={<PersonAddIcon />}
           sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
         >
-          Invite
+          Thêm thành viên
         </Button>
       </Tooltip>
 
@@ -62,14 +85,14 @@ function InviteBoardUser( { boardId } ) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <form onSubmit={handleSubmit(submitInviteUserToBoard)} style={{ width: '320px' }}>
+        <form onSubmit={handleSubmit(submitInviteUserToBoard)} style={{ width: '500px' }}>
           <Box sx={{ p: '15px 20px 20px 20px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>Invite User To This Board!</Typography>
+            <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>Thêm thành viên vào bảng này!</Typography>
             <Box>
               <TextField
                 autoFocus
                 fullWidth
-                label="Enter email to invite..."
+                label="Nhập email để mời..."
                 type="text"
                 variant="outlined"
                 {...register('inviteeEmail', {
@@ -88,12 +111,58 @@ function InviteBoardUser( { boardId } ) {
                 variant="contained"
                 color="info"
               >
-                Invite
+                Thêm
               </Button>
             </Box>
           </Box>
         </form>
+        <Box>
+          <Typography variant="h6" sx={{ mt: 3, ml: 2 }}>
+            Danh sách thành viên
+          </Typography>
+          {members.map((member) => (
+            <Box
+              key={member.id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                p: 1,
+                borderBottom: '1px solid #ddd',
+              }}
+            >
+              <Box>
+                <Typography>{member.name}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {member.email}
+                </Typography>
+              </Box>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={(event) => handleOpenMenu(event, member)}
+              >
+                {member.role}
+              </Button>
+            </Box>
+          ))}
+        </Box>
       </Popover>
+      <Menu
+        anchorEl={anchorMenuElement}
+        open={Boolean(anchorMenuElement)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={() => handleChangeRole('Quản trị viên')}>Quản trị viên</MenuItem>
+        <MenuItem onClick={() => handleChangeRole('Thành viên')}>Thành viên</MenuItem>
+        <MenuItem disabled>
+          Quan sát viên <Typography variant="body2" sx={{ ml: 1, color: 'gray' }}>(Nâng cấp)</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => handleChangeRole('Xóa khỏi bảng')} sx={{ color: 'red' }}>
+          Xóa khỏi bảng
+        </MenuItem>
+      </Menu>
+
     </Box>
   )
 }

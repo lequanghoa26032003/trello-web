@@ -73,7 +73,7 @@ function Board() {
   }
   if (!board) {
     return (
-      <PageLoadingSpinner caption="Loading Board..." />
+      <PageLoadingSpinner caption="Đang tải..." />
     )
   }
   return (

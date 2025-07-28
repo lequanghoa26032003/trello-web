@@ -48,18 +48,18 @@ function ModeSelect() {
       >
         <MenuItem value="light" >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <LightModeIcon/> Light
+            <LightModeIcon/> Sáng
           </Box>
         </MenuItem>
         <MenuItem value="dark">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <DarkModeOutlinedIcon/> Dark
+            <DarkModeOutlinedIcon/> Tối
           </Box>
         </MenuItem>
 
         <MenuItem value="system">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SettingsBrightnessIcon/> Mode
+            <SettingsBrightnessIcon/> Hệ thống
           </Box>
         </MenuItem>
 

@@ -40,7 +40,7 @@ function CardActivitySection({ cardComments=[], onAddCardComment }) {
         />
         <TextField
           fullWidth
-          placeholder="Write a comment..."
+          placeholder="Viết bình luận..."
           type="text"
           variant="outlined"
           multiline

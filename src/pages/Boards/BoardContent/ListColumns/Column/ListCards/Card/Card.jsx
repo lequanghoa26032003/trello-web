@@ -4,18 +4,33 @@ import Typography from '@mui/material/Typography'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
-import GroupIcon from '@mui/icons-material/Group'
+import CardUserGroup from '~/components/Modal/ActiveCard/CardUserGroup'
 import CommentIcon from '@mui/icons-material/Comment'
 import AttachmentIcon from '@mui/icons-material/Attachment'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useDispatch } from 'react-redux'
-import { updateCurrentActiveCard, showModalActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCurrentActiveCard,
+  showModalActiveCard,
+  selectCurrentActiveCard
+} from '~/redux/activeCard/activeCardSlice'
+import { updateCardDetailsAPI } from '~/apis'
+import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 function Card( props ) {
   const dispatch = useDispatch()
+  const activeCard = useSelector(selectCurrentActiveCard)
   const { card } = props
   const shouldShowCardActions = () => {
     return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
+  }
+  //fc dùng chung cho update card
+  const callApiUpdateCard = async(updateData) => {
+    const updatedCard = await updateCardDetailsAPI(card?._id, updateData)
+
+    dispatch(updateCurrentActiveCard(updatedCard))
+    //
+    dispatch(updateCardInBoard(updatedCard))
+    return updatedCard
   }
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card._id,
@@ -32,10 +47,11 @@ function Card( props ) {
     // Hieenj Modal ActiveCard leen
     dispatch(showModalActiveCard())
   }
-
+  const onUpdateCardMembers = (incomingMemberInfo) => {
+    callApiUpdateCard({ incomingMemberInfo })
+  }
   return (
     <MuiCard
-      onClick={setActiveCard}
       ref= {setNodeRef}
       style={dndkitCardStyle}
       {...attributes}
@@ -52,15 +68,22 @@ function Card( props ) {
         <CardMedia
           sx={{ height: 140 }}
           image={card.cover}
+          onClick={setActiveCard}
+
         />
       }
-      <CardContent>
+      <CardContent onClick={setActiveCard}>
         <Typography>{card?.title}</Typography>
       </CardContent>
       {shouldShowCardActions () &&
       <CardActions sx={{ p: '0 4px 8px 4px' }} >
         {!!card?.memberIds?.length &&
-        <Button size="small" startIcon={<GroupIcon/>} >{card?.memberIds?.length}</Button>
+          <CardUserGroup
+            cardMemberIds = { card?.memberIds}
+            onUpdateCardMember = { onUpdateCardMembers }
+
+          />
+        // <Button size="small" startIcon={<GroupIcon/>} >{card?.memberIds?.length}</Button>
         }
         {!!card?.comments?.length &&
         <Button size="small" startIcon={<CommentIcon/>} >{card?.comments?.length}</Button>

@@ -33,7 +33,7 @@ function Workspaces() {
         sx={{ color: 'white' }}
 
       >
-        Workspaces
+        Các không gian làm việc
       </Button>
       <Menu
         id="basic-menu-workspaces"
