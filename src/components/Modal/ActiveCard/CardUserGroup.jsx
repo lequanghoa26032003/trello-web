@@ -50,7 +50,7 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMember }) {
       )}
 
       {/* Nút này để mở popover thêm member */}
-      <Tooltip title="Add new member">
+      <Tooltip title="Thêm thành viên mới">
         <Box
           aria-describedby={popoverId}
           onClick={handleTogglePopover}

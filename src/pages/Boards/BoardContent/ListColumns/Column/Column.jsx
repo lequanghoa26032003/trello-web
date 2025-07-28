@@ -185,7 +185,7 @@ function Column( props ) {
                 }}
               >
                 <ListItemIcon><AddCardIcon className='add-card-icon' fontSize="small" /></ListItemIcon>
-                <ListItemText>Add new card</ListItemText>
+                <ListItemText>Thêm thẻ</ListItemText>
               </MenuItem>
               <MenuItem onClick={handleClose} >
                 <ListItemIcon><ContentCopy fontSize="small" /></ListItemIcon>
@@ -216,7 +216,7 @@ function Column( props ) {
                 }}
               >
                 <ListItemIcon><DeleteForeverIcon className='delete-Forever-icon' fontSize="small" />
-                </ListItemIcon><ListItemText>Remove this column</ListItemText>
+                </ListItemIcon><ListItemText>Xóa danh sách</ListItemText>
               </MenuItem>
             </Menu>
           </Box>
@@ -237,7 +237,7 @@ function Column( props ) {
                 justifyContent: 'space-between'
               }}
             >
-              <Button startIcon={<AddCardIcon/>} onClick={toggleOpenNewCardForm} >Add new card</Button>
+              <Button startIcon={<AddCardIcon/>} onClick={toggleOpenNewCardForm} >Thêm thẻ</Button>
               <Tooltip title="Drag to move" >
                 <DragHandleIcon sx={{ cursor: 'pointer' }} />
               </Tooltip>
@@ -252,7 +252,7 @@ function Column( props ) {
               }}
             >
               <TextField
-                label="Enter card title..."
+                label="Nhập tiêu đề thẻ..."
                 variant="outlined"
                 value={newCardTite}
                 onChange={ ( e ) => setNewCardTitle(e.target.value) }
@@ -293,7 +293,7 @@ function Column( props ) {
                     borderColor: (theme) => theme.palette.success.main,
                     '&:hover': { bgcolor: (theme) => theme.palette.success.main }
                   }}
-                >Add</Button>
+                >Thêm</Button>
                 <CloseIcon
                   fontSize="small"
                   sx={{

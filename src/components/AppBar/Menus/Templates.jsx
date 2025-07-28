@@ -32,7 +32,7 @@ function Templates() {
         endIcon={ <ExpandMoreIcon />}
         sx={{ color: 'white' }}
       >
-        Templates
+        Mẫu
       </Button>
       <Menu
         id="basic-menu-template"

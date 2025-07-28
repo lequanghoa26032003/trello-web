@@ -66,7 +66,7 @@ function AutoCompleteSearchBoard() {
       sx={{ width: 220 }}
       id="asynchronous-search-board"
       // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
-      noOptionsText={!boards ? 'Type to search board...' : 'No board found!'}
+      noOptionsText={!boards ? 'Nhập để tìm kiếm...' : 'Không tìm thấy kết quả!'}
 
       // Cụm này để handle việc đóng mở phần kết quả tìm kiếm
       open={open}
@@ -96,7 +96,7 @@ function AutoCompleteSearchBoard() {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Type to search..."
+          label="Nhập để tìm kiếm..."
           size="small"
           InputProps={{
             ...params.InputProps,

@@ -82,7 +82,7 @@ function ListColumns( props ) {
                 py: 1.5
               }}
             >
-              Add new column
+              Thêm danh sách khác
             </Button>
           </Box>
           :
@@ -101,7 +101,7 @@ function ListColumns( props ) {
             }}
           >
             <TextField
-              label="Enter column title..."
+              label="Nhập tiêu đề danh sách..."
               variant="outlined"
               value={newColumnTite}
               onChange={ ( e ) => setNewColumnTitle(e.target.value) }
@@ -138,7 +138,7 @@ function ListColumns( props ) {
                   borderColor: (theme) => theme.palette.success.main,
                   '&:hover': { bgcolor: (theme) => theme.palette.success.main }
                 }}
-              >Add column</Button>
+              >Thêm danh sách</Button>
               <CloseIcon
                 fontSize="small"
                 sx={{

@@ -70,7 +70,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
     <>
       <SidebarItem onClick={handleOpenModal}>
         <LibraryAddIcon fontSize="small" />
-        Create a new board
+        Tạo bảng mới
       </SidebarItem>
 
       <Modal
@@ -106,7 +106,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
           </Box>
           <Box id="modal-modal-title" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <LibraryAddIcon />
-            <Typography variant="h6" component="h2"> Create a new board</Typography>
+            <Typography variant="h6" component="h2"> Tạo bảng mới</Typography>
           </Box>
           <Box id="modal-modal-description" sx={{ my: 2 }}>
             <form onSubmit={handleSubmit(submitCreateNewBoard)}>
@@ -126,8 +126,8 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                     }}
                     {...register('title', {
                       required: FIELD_REQUIRED_MESSAGE,
-                      minLength: { value: 3, message: 'Min Length is 3 characters' },
-                      maxLength: { value: 50, message: 'Max Length is 50 characters' }
+                      minLength: { value: 3, message: 'Độ dài tối thiểu là 3 ký tự' },
+                      maxLength: { value: 50, message: 'Độ dài tối đa là 50 ký tự' }
                     })}
                     error={!!errors['title']}
                   />
@@ -150,8 +150,8 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                     }}
                     {...register('description', {
                       required: FIELD_REQUIRED_MESSAGE,
-                      minLength: { value: 3, message: 'Min Length is 3 characters' },
-                      maxLength: { value: 255, message: 'Max Length is 255 characters' }
+                      minLength: { value: 3, message: 'Độ dài tối thiểu là 3 ký tự' },
+                      maxLength: { value: 255, message: 'Độ dài tối đa là 255 ký tự' }
                     })}
                     error={!!errors['description']}
                   />
@@ -197,7 +197,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                     variant="contained"
                     color="primary"
                   >
-                    Create
+                    Tạo mới
                   </Button>
                 </Box>
               </Box>

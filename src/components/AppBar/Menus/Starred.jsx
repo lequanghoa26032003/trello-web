@@ -32,7 +32,7 @@ function Starred() {
         endIcon={ <ExpandMoreIcon />}
         sx={{ color: 'white' }}
       >
-        Starred
+        Đã đánh dấu sao
       </Button>
       <Menu
         id="basic-menu-starred"
