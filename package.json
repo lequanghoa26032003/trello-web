@@ -6,7 +6,7 @@
   "author": "TrungQuanDev - Một Lập Trình Viên",
   "description": "https://youtube.com/@trungquandev",
   "engines": {
-    "node": "20.11.1"
+    "node": "20"
   },
   "scripts": {
     "dev": "vite --host",
